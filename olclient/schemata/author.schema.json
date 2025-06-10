@@ -34,7 +34,10 @@
       ]
     },
     "date": { "type": "string" },
-    "entity_type": { "type": "string" },
+    "entity_type": {
+      "type": "string",
+      "enum": ["person", "org", "event"]
+    },
     "fuller_name": { "type": "string" },
     "personal_name": { "type": "string" },
     "title": { "type": "string" },
@@ -59,10 +62,6 @@
           "pattern": "^[0-9]+$"
         }
       }
-    },
-    "wikipedia": {
-      "type": "string",
-      "description": "DEPRECATED: Not many authors have this property. Should be moved to Links and/or remote_ids: wikidata."
     },
     "revision":        { "type": "number" },
     "latest_revision": { "type": "number" },

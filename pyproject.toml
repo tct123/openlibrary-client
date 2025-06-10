@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=61.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+dynamic = ["version"]
+name = "openlibrary-client"
+authors = [{name = "Internet Archive", email = "mek@archive.org"}]
+license = {text = "LICENSE"}
+description = "A Python client for Open Library"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "backoff==2.2.1",
+    "internetarchive==3.6.0",
+    "jsonpickle==3.0.2",
+    "jsonschema==4.21.1",
+    "requests[security]==2.31.0",
+    "simplejson==3.19.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/internetarchive/openlibrary-client"
+
+[project.scripts]
+ol = "olclient.cli:main"
+
+[tool.setuptools]
+packages = ["olclient"]
+include-package-data = true
+platforms = ["any"]
+
+[tool.setuptools.dynamic]
+version = {attr = "olclient.__version__"}
+
+[tool.distutils.bdist_wheel]
+universal = 1
+
+[tool.codespell]
+ignore-words-list = "ba,fromm,tha,wege"
+skip = "./.*"
+
+[tool.mypy]
+ignore_missing_imports = true
+pretty = true
+show_error_codes = true
+show_error_context = true
+
+[tool.pytest.ini_options]
+norecursedirs = ["lib*"]
+
+[tool.ruff]
+extend-select = ["C4", "C9", "PLC", "PLE", "W"]
+ignore = ["E703", "E722", "E731", "F401", "E402"]
+line-length=1501
+show-source = true
+target-version = "py37"
+
+[tool.ruff.mccabe]
+max-complexity = 33

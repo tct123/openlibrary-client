@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
     __init__.py
@@ -10,10 +9,10 @@
 """
 
 __title__ = 'olclient'
-__version__ = '0.0.17'
+__version__ = '0.0.31'
 __author__ = 'Internet Archive'
 
 
-from .openlibrary import OpenLibrary
-from .marc import MARC
-from .common import Book, Author
+from olclient.bots import AbstractBotJob
+from olclient.openlibrary import OpenLibrary
+from olclient.common import Book, Author

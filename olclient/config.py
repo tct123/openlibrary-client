@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
     config.py
@@ -11,20 +10,15 @@
     :license: see LICENSE for more details.
 """
 
-from __future__ import absolute_import, division, print_function
 
-from collections import namedtuple
+import configparser
 import os
-import sys
 import types
-
-try:
-    import ConfigParser as configparser
-except:
-    import configparser
+from collections import namedtuple
 
 path = os.path.dirname(os.path.realpath(__file__))
 approot = os.path.abspath(os.path.join(path, os.pardir))
+
 
 def getdef(self, section, option, default_value):
     """A utility method which allows ConfigParser to be fill in defaults
@@ -36,20 +30,14 @@ def getdef(self, section, option, default_value):
         return default_value
 
 
-Credentials = namedtuple(
-    'Credentials', ['access', 'secret'])
+Credentials = namedtuple('Credentials', ['access', 'secret'])
 
 
-class Config(object):
+class Config:
 
     """Manages configurations for the Python OpenLibrary API Client"""
 
-    DEFAULTS = {
-        u's3': {
-            u'access': u'',
-            u'secret': u''
-        }
-    }
+    DEFAULTS = {'s3': {'access': '', 'secret': ''}}
 
     @classmethod
     def get_config_parser(cls):
@@ -76,9 +64,9 @@ class Config(object):
         config_dir = os.path.expanduser('~/.config')
         if not os.path.isdir(config_dir):
             return os.path.expanduser('~/.ol')
-        return '{0}/ol.ini'.format(config_dir)
+        return f'{config_dir}/ol.ini'
 
-    def update(self, config):        
+    def update(self, config):
         """Updates the config defaults by updating it with config dict values
 
         Args:
@@ -88,7 +76,7 @@ class Config(object):
 
         _config = self.DEFAULTS
         _config.update(config)
-        
+
         for section in _config:
             config_parser.add_section(section)
             for key, default in _config[section].items():
@@ -98,7 +86,7 @@ class Config(object):
 
         with open(self.config_file, 'w') as config_file:
             self.config.write(config_file)
-    
+
     def create_default_config(self):
         """Creates and saves a new config file with the correct default values
         at the appropriate filepath.
@@ -113,7 +101,6 @@ class Config(object):
                 os.chmod(self.config_file, 0o600)
                 self.config.write(fh)
 
-
     def _get_config(self):
         config = {}
         for section in self.DEFAULTS:
@@ -121,7 +108,7 @@ class Config(object):
             for key, default in self.DEFAULTS[section].items():
                 config[section][key] = self.config.getdef(section, key, default)
         return config
-    
+
     def get_config(self):
         """Loads an existing config .ini file from the disk and returns its
         contents as a dict
@@ -129,6 +116,5 @@ class Config(object):
         config = self._get_config()
         access = config['s3'].pop('access')
         secret = config['s3'].pop('secret')
-        config['s3'] = Credentials(
-            access, secret) if (access, secret) else None
+        config['s3'] = Credentials(access, secret) if access and secret else None
         return config
